@@ -132,7 +132,7 @@ def recommend():
         rows = len(sorted_movies.axes[0])
         print("rows")
         print(rows)
-        number1 = random.randint(0, rows)
+        number1 = random.randint(0, (rows-1))
         print("random num") 
         print(number1)
         # pick movie using random index

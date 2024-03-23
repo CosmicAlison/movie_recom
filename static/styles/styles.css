@@ -11,6 +11,17 @@ body{
     position: absolute;
     left: 50vh;
 }
+
+#poster{
+  position: absolute;
+  left: 45vh;
+  top: 5vh;
+}
+
+#content{
+  position: absolute;
+  bottom: 5vh;
+}
 .btn-primary:hover{
     color: #5f1418;
     background-color: white;
@@ -31,15 +42,15 @@ body{
   background-color: #ffffff;
   margin: 100px auto;
   padding: 40px;
-  width: 70%;
-  height: 50%;
+  width: 100vh;
+  height: 55vh;
   display:none;
-  z-index: 5; 
-  position: absolute;
-  top:10%;  
-  left:15%;
+  z-index: 8; 
+  top:5vh;  
+  left:50vh;
   padding:2px;
   border-radius: 20px;
+  position: absolute;
 }
 
 #user_prompts {
