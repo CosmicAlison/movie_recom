@@ -8,6 +8,8 @@ body{
     background-color: #5f1418; 
     font-weight:400;
     border-color: #5f1418;
+    position: absolute;
+    left: 50vh;
 }
 .btn-primary:hover{
     color: #5f1418;
@@ -18,29 +20,48 @@ body{
 #intro{
     color: white;
     position: fixed;
-    left: 30%;
-    top: 5%;
-    width: 50%;
+    left: 75vh;
+    top: 5vh;
+    width: 50vh;
     justify-content: center;
+    text-align: center;
+}
+
+#result{
+  background-color: #ffffff;
+  margin: 100px auto;
+  padding: 40px;
+  width: 70%;
+  height: 50%;
+  display:none;
+  z-index: 5; 
+  position: absolute;
+  top:10%;  
+  left:15%;
+  padding:2px;
+  border-radius: 20px;
 }
 
 #user_prompts {
     background-color: #ffffff;
     margin: 100px auto;
     padding: 40px;
-    width: 70%;
-    height: 50%;
+    width: 100vh;
+    height: 55vh;
     display:none;
     z-index: 5; 
     position: absolute;
-    top:10%;  
-    left:15%;
+    top:5vh;  
+    left:50vh;
+    padding:2px;
+    border-radius: 20px;
+    position: absolute;
   }
   
   /* Style the input fields */
   input {
-    padding-top: 0%;
-    width: 100%;
+    width: 60%;
+    display: inline-block
   }
   
   /* Mark input boxes that gets an error on validation: */
@@ -51,6 +72,12 @@ body{
   /* Hide all steps by default: */
   .tab {
     display: none;
+    position: absolute;
+    top:5vh;  
+    left:15vh;
+    width: 100vh;
+    height: 50vh;
+
   }
   
   /* Make circles that indicate the steps of the form: */
@@ -65,6 +92,17 @@ body{
     opacity: 0.5;
   }
   
+  #dots_div{
+    position: absolute;
+    bottom: 8vh;
+    left: 40vh;
+  }
+
+  #next_div{
+    position: absolute;
+    bottom: 2vh;
+    left: 45vh;
+  }
   /* Mark the active step: */
   .step.active {
     opacity: 1;
@@ -93,19 +131,4 @@ body{
 
   option:hover, input:hover{
     background-color: #aaaaaa;
-  }
-
-  #result{
-    display:none;
-    background-color: #ffffff;
-    margin: 100px auto;
-    padding: 40px;
-    width: 70%;
-    height: 50%;
-    z-index: 5; 
-    position: absolute;
-    top:10%;  
-    left:15%;
-    z-index: 10;
-
   }

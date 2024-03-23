@@ -20,7 +20,7 @@
         top:10%; left: 2%">
         <!-- Background image -->
         <div id="root">
-            <div id="initial"style="z-index: 5; position: absolute; top:35%;  left:47%">
+            <div id="initial"style="z-index: 5; position: absolute; top:35vh;  left:47vh">
               <h1 id="intro">Welcome to Picflix</h1>
             <button type = "button" class="btn btn-primary btn-lg" onclick="show_form()">Start</button> 
             </div>
@@ -40,33 +40,33 @@
                 <!-- One "tab" for each step in the form: -->
                 <div class="tab">Which movie themes are you interested in? You may pick multiple.
                   <div id="themes" class="user-data">
-                    <input type="checkbox" id="theme1" name="theme1" value="friendship"
-                     onclick="add_checked(this.value)">
                     <label for="theme1"> Friendship</label>
-
+                    <input type="checkbox" id="theme1" name="theme1" value="friend"
+                     onclick="add_checked(this.value)">
+                    
+                    <label for="theme2"> Set in space</label>
                     <input type="checkbox" id="theme2" name="theme2" value="space"
                     onclick="add_checked(this.value)">
-                    <label for="theme2"> Set in space</label>
-
-                    <input type="checkbox" id="theme3" name="theme3" value="adolescence"
-                    onclick="add_checked(this.value)">
+                    
                     <label for="theme3"> Coming Of Age</label>
-
-                    <input type="checkbox" id="theme4" name="theme4" value="Zombies"
+                    <input type="checkbox" id="theme3" name="theme3" value="teen"
                     onclick="add_checked(this.value)">
+                    
                     <label for="theme4"> Zombies</label>
-
-                    <input type="checkbox" id="theme5" name="theme5" value="Nostalgia"
+                    <input type="checkbox" id="theme4" name="theme4" value="Zombie"
                     onclick="add_checked(this.value)">
-                    <label for="theme5"> Nostalgia</label>
 
+                    <label for="theme5"> Nostalgia</label>
+                    <input type="checkbox" id="theme5" name="theme5" value="nostalg"
+                    onclick="add_checked(this.value)">
+
+                    <label for="theme6"> Weddings</label>
                     <input type="checkbox" id="theme6" name="theme6" value="wedding"
                     onclick="add_checked(this.value)">
-                    <label for="theme6"> Weddings</label>
-
-                    <input type="checkbox" id="theme7" name="theme7" value="Past"
-                    onclick="add_checked(this.value)">
+                    
                     <label for="theme7"> Set in the past</label>
+                    <input type="checkbox" id="theme7" name="theme7" value="past"
+                    onclick="add_checked(this.value)">
                   </div>
                 </div>
                 
@@ -126,15 +126,13 @@
                 </select>
                 </div>
 
-                <div style="overflow:auto;">
-                  <div style="float:right;">
+                <div id="next_div">
                     <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                     <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                  </div>
                 </div>
                 
                 <!-- Circles which indicates the steps of the form: -->
-                <div style="text-align:center;margin-top:20%;">
+                <div id="dots_div">
                   <span class="step"></span>
                   <span class="step"></span>
                   <span class="step"></span>

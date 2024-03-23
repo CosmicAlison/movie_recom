@@ -10,6 +10,7 @@ from nltk.corpus import stopwords
 from nltk.tag import pos_tag
 from flask import Flask, render_template, request, jsonify
 import datetime
+import random
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -75,7 +76,7 @@ def recommend():
     movie_age = data['movie_age']
     age_rating = data['age_rating']
     genre = data['genre']
-    theme = data['themes']
+    themes = data['themes']
 
     # deduct the oldest desired date of the movie from the current year
     today = datetime.date.today()
@@ -83,27 +84,59 @@ def recommend():
 
     # filter out movies which contain the desired genre
     print(movies)
-    genre_filtered = movies[movies.Genre.str.contains(genre)]
-    print(genre_filtered)
-    # pick movies more recent than the desired unless the user wants movies older than 20
-    if movie_age != 20:
-        age_filtered = genre_filtered.loc[genre_filtered['Year'] >= desired_year]
-    else:
-        age_filtered = genre_filtered.loc[genre_filtered['Year'] <= desired_year]
-        print(age_filtered)
+    similar_movies = pd.DataFrame()
+    for theme in themes:
+        theme_filtered = movies[movies.Description.str.contains(theme, case=False)]
+        similar_movies = pd.concat([similar_movies, theme_filtered])
 
-    # filter out movies with desired age range
-    age_rating_filtered = age_filtered.loc[age_filtered['Age Rating'] == age_rating]
-    print(age_rating_filtered)
+    if not similar_movies.empty:
+        print(similar_movies)
+         # pick movies more recent than the desired unless the user wants movies older than 20
+        if int(movie_age) != 20:
+            age_filtered = similar_movies.loc[similar_movies['Year'] >= desired_year]
+        else:
+            age_filtered = similar_movies.loc[similar_movies['Year'] <= desired_year]
+        if len(age_filtered.axes[0])>= 2:
+            min_filtered = age_filtered[age_filtered.Genre.str.contains(genre)] 
+            if len(min_filtered.axes[0])>= 2:
+                print("result with theme, genre and age criteria filled")
+                final_filtered = min_filtered
+            else:
+                print("result with theme and age fulfilled")
+                final_filtered = age_filtered   
+        else:
+            final_filtered = similar_movies
+        print("final result with themes")
+        print(final_filtered)
+    else:  
+        genre_filtered = movies[movies.Genre.str.contains(genre)]
+        print(genre_filtered)
+        if int(movie_age) != 20:
+            age_filtered = genre_filtered[genre_filtered['Year'] >= desired_year]
+        else: 
+            age_filtered = genre_filtered[genre_filtered['Year'] <= desired_year]
+        if len(age_filtered.axes[0])>= 2:
+            final_filtered = age_filtered
+        else:
+            final_filtered = genre_filtered
+        print("final result with genre")
+        print(final_filtered)
+
+
 
     # arrange movies by the highest rating
-    sorted_movies = age_rating_filtered.sort_values(by=['IMDB Rating'], ascending=[False])
+    sorted_movies = final_filtered.sort_values(by=['IMDB Rating'], ascending=[False])
     print("Chosen movie")
 
     if not sorted_movies.empty:
-
-        # pick movie with the highest rating
-        recommended_movie = sorted_movies.iloc[0]
+        rows = len(sorted_movies.axes[0])
+        print("rows")
+        print(rows)
+        number1 = random.randint(0, rows)
+        print("random num") 
+        print(number1)
+        # pick movie using random index
+        recommended_movie = sorted_movies.iloc[number1]
         print(recommended_movie['Movie Title'])
         data = {
             'Title': recommended_movie["Movie Title"],
