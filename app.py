@@ -91,22 +91,22 @@ def recommend():
 
     if not similar_movies.empty:
         print(similar_movies)
-         # pick movies more recent than the desired unless the user wants movies older than 20
-        if int(movie_age) != 20:
-            age_filtered = similar_movies.loc[similar_movies['Year'] >= desired_year]
-        else:
-            age_filtered = similar_movies.loc[similar_movies['Year'] <= desired_year]
-        if len(age_filtered.axes[0])>= 2:
-            min_filtered = age_filtered[age_filtered.Genre.str.contains(genre)] 
-            if len(min_filtered.axes[0])>= 2:
-                print("result with theme, genre and age criteria filled")
-                final_filtered = min_filtered
+        genre_filtered = similar_movies.loc[similar_movies.Genre.str.contains(genre)]
+        if len(genre_filtered.axes[0]) >= 1:
+            # pick movies more recent than the desired unless the user wants movies older than 20
+            if int(movie_age) != 20:
+                age_filtered = genre_filtered.loc[genre_filtered['Year'] >= desired_year]
             else:
-                print("result with theme and age fulfilled")
-                final_filtered = age_filtered   
+                age_filtered = genre_filtered.loc[genre_filtered['Year'] <= desired_year]
+            if len(age_filtered.axes[0])>= 1:
+                print("result with theme, genre and age criteria filled")
+                final_filtered = age_filtered
+            else:
+                print("result with theme and genre fulfilled")
+                final_filtered = genre_filtered  
         else:
             final_filtered = similar_movies
-        print("final result with themes")
+            print("final result with themes")
         print(final_filtered)
     else:  
         genre_filtered = movies[movies.Genre.str.contains(genre)]
@@ -116,10 +116,11 @@ def recommend():
         else: 
             age_filtered = genre_filtered[genre_filtered['Year'] <= desired_year]
         if len(age_filtered.axes[0])>= 2:
+            print("final result with genre and age")
             final_filtered = age_filtered
         else:
             final_filtered = genre_filtered
-        print("final result with genre")
+            print("final result with genre")
         print(final_filtered)
 
 
