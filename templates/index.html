@@ -64,9 +64,30 @@
                     onclick="add_checked(this.value)">
                     <label for="theme6"> Weddings</label>
 
-                    <input type="checkbox" id="theme7" name="theme7" value="Past"
+                    <input type="checkbox" id="theme7" name="theme7" value="past"
                     onclick="add_checked(this.value)">
                     <label for="theme7"> Set in the past</label>
+
+                    <input type="checkbox" id="theme8" name="theme8" value="travel"
+                    onclick="add_checked(this.value)">
+                    <label for="theme8"> Travel</label>
+
+                    <input type="checkbox" id="theme9" name="theme9" value="food"
+                    onclick="add_checked(this.value)">
+                    <label for="theme9"> Food</label>
+
+                    <input type="checkbox" id="theme10" name="theme10" value="activism"
+                    onclick="add_checked(this.value)">
+                    <label for="theme10"> Activism</label>
+
+                    <input type="checkbox" id="theme11" name="theme11" value="family"
+                    onclick="add_checked(this.value)">
+                    <label for="theme11"> Family</label>
+
+                    <input type="checkbox" id="theme12" name="theme12" value="birthday"
+                    onclick="add_checked(this.value)">
+                    <label for="theme7"> Birthdays</label>
+
                   </div>
                 </div>
                 
@@ -288,7 +309,7 @@ function sub() {
                  document.getElementById("result").style.display = "block";
                  if (chosen_movie.Title){
                     document.getElementById("poster").innerHTML = '<img src="'+chosen_movie.URL+'" style="z-index:5;'+
-                    'display: inline-block;top:10%; left: 2%; width: 67px; height: 98px; float:left;">';
+                    'display: inline-block;top:6vh; left: 2vh; height: 30vh; float:left;">';
                     document.getElementById("title").innerHTML = '<h1>'+chosen_movie.Title;+'</h1>';
                     document.getElementById("description").innerHTML = '<p>'+ chosen_movie.Description; + '</p>';
                  }
