@@ -1,0 +1,17 @@
+.main-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 60vw;
+    width: 40vw;
+    height: auto;
+    margin: 20px auto;
+    text-align: center;
+  }
+
+@media screen and (max-width: 850px){
+    .main-container{
+      width: 60vw;
+    }
+}

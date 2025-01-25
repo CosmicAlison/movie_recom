@@ -1,0 +1,109 @@
+@font-face {
+  font-family: 'cogoose-reg';
+  src: url('./fonts/Cocogoose-Pro-Regular-trial.ttf') format('truetype'); 
+}
+
+@font-face {
+  font-family: 'cogoose-thin';
+  src: url('./fonts/Cocogoose-Pro-Thin-trial.ttf') format('truetype'); 
+}
+
+@font-face {
+  font-family: 'cogoose-bold';
+  src: url('./fonts/Cocogoose-Pro-Bold-trial.ttf') format('truetype'); 
+}
+
+@font-face {
+  font-family: 'viley-reg';
+  src: url('./fonts/Wasted-Vindey.ttf') format('truetype'); 
+}
+
+
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 40
+}
+
+
+.App {
+  font-family: 'cogoose-reg';
+  text-align: center;
+  background-image: url('./assets/red_seats.jpg');
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0vh;
+  left:0vw;
+  background-size: cover;
+  display:flex;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+h1 {
+  font-family: 'cogoose-bold';
+  font-size: clamp(1.9rem, 5vw, 4.1rem);
+}
+
+p{
+  font-family: 'cogoose-thin';
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
+}
+
+.logo{
+  width: 6vw;
+  height: auto;
+  position: fixed;
+  top: 5vh;
+  left: 5vh;
+  color:white;
+}
+
+.login{
+  height: auto;
+  position: fixed;
+  top: 5vh;
+  right: 5vh;
+  background-color: transparent;
+  border-color: transparent;
+  color:white;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,24 @@
+.movie-info{
+    .rating, .movie-genres{
+        font-family:Arial, Helvetica, sans-serif;
+        font-size: small;
+    }
+    .movie-poster{
+        height: 55vh
+    }
+    .poster-image{
+        height: 100%
+    }
+    .movie-description{
+        font-family: 'cogoose-reg';
+        font-size: x-small;
+    }
+    .red-bold{
+        color:#4e090b;
+        font-weight: bold;
+    }
+}
+.recommended-movie-container{
+    max-height: 70vh;
+    overflow-y: scroll;
+}

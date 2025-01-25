@@ -2,6 +2,7 @@ import pandas
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
 import time
 import numpy as np
 
@@ -16,7 +17,8 @@ urls = ["https://www.imdb.com/search/title/?count=100&groups=top_1000&sort=user_
         "https://www.imdb.com/search/title/?groups=top_1000&sort=user_rating,desc&count=100&start=701&ref_=adv_nxt",
         "https://www.imdb.com/search/title/?groups=top_1000&sort=user_rating,desc&count=100&start=801&ref_=adv_nxt",
         "https://www.imdb.com/search/title/?groups=top_1000&sort=user_rating,desc&count=100&start=901&ref_=adv_nxt"]
-driver = webdriver.Chrome('C:\\Users\\aliso\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe')
+s = Service('C:\\Users\\aliso\\Downloads\\chromedriver-win64_s\\chromedriver-win64\\chromedriver.exe')
+driver = webdriver.Chrome(service=s)
 
 all_titles = []
 release_years = []
@@ -57,6 +59,8 @@ for url in urls:
         description = x.find_all('p', {'class': 'text-muted'})
         movie_descriptions.append(description[1].text)
         cover_link = x.find('img', {'alt':title}).get('loadlate')
+        print(description)
+        print(cover_link)
         if cover_link:
             image_urls.append(cover_link)
         else:
