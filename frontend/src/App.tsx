@@ -76,14 +76,15 @@ const App: React.FC = () => {
         })
       })
       .catch((error) => {
-        console.error("Error fetching recommendations:", error);//To do: show a oops we couldn't find matching profiles on error
+        console.error("Error fetching recommendations:", error);
+        setPage('Error');
       });
   }
   ;
 
   return (
     <div className="App">
-      <img src={require ("./assets/picflix.png")} alt="PicFlix" className="logo"/>
+      <img onClick={()=>{setPage('intro')}} src={require ("./assets/picflix.png")} alt="PicFlix" className="logo"/>
       <button className='login'><span className="material-symbols-rounded">account_circle</span></button>
       {page === 'intro' && (
         <IntroPage onclickEvent={()=>setPage('questionForm')}></IntroPage>
@@ -107,7 +108,7 @@ const App: React.FC = () => {
       )}
       {page === 'Error' && (
         <MainContainer>
-          <LoadingPage/>
+          <Error/>
         </MainContainer>
       )}
     </div>
