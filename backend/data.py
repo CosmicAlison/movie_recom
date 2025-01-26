@@ -48,7 +48,7 @@ for url in urls:
         if age:
             age_text = age.get_text()
         else:
-            age_text = "N/A"
+            age_text = "Unrated"
         age_ratings.append(age_text)
         length = x.p.find('span', {'class': 'runtime'}).text.replace(' min', '')
         movie_lengths.append(length)

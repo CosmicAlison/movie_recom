@@ -12,7 +12,7 @@ interface Movie {
   year: number;
   ageRating: string;
   duration: string;
-  genre: string[];
+  genre: string;
   imdbRating: number;
   description: string;
   imageLink: string;
@@ -22,20 +22,19 @@ interface Movie {
 const App: React.FC = () => {
   const [page, setPage] = useState<'intro' | 'questionForm' | 'recommendedMovie'|'loadingPage'|'Error' >('intro');
   const [answers, setAnswers] = useState<Record<number, string|string[]>>({});
-  const [recommendedMovie, setRecommendedMovie] = useState<Movie>();
+  const [recommendedMovies, setRecommendedMovies] = useState<Movie[]>();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-  const handleFormSubmit = (answers: Record<number, string|string[]>) => {
+  const handleFormSubmit = (answers: Record<number, string | string[]>) => {
     setPage("loadingPage");
     setAnswers(answers);
     const apiData = {
-      occasion: answers[2] as string, 
-      movie_age: answers[4] as string, 
-      genre: answers[3] as string[], 
-      themes: answers[1] as string[], 
-      mood: answers[5] as string, 
+      occasion: answers[2] as string,
+      movie_age: answers[4] as string,
+      genre: answers[3] as string[],
+      themes: answers[1] as string[],
+      mood: answers[5] as string,
     };
-  
+
     fetch("http://localhost:5000/recommend", {
       method: "POST",
       headers: {
@@ -44,43 +43,58 @@ const App: React.FC = () => {
       body: JSON.stringify(apiData),
     })
       .then((response) => response.json())
-      .then((data) => { 
-        const min = 0;
-        const max = 9;
-        const rand = Math.floor(min + Math.random() * (max - min));
-        const parsedData = {
-          ageRating: data.recommendations[rand]["Age Rating"],
-          description: data.recommendations[rand]["Description"].trim(), 
-          duration: `${data.recommendations[rand]["Duration"]} min`,
-          genre: data.recommendations[rand]["Genre"],
-          imdbRating: data.recommendations[rand]["IMDB Rating"],
-          movieTitle: data.recommendations[rand]["Movie Title"],
-          imageLink: '',
-          year: data.recommendations[rand]["Year"], 
-        }
-        //Fetch poster from tmdb
-        fetch(`https://api.themoviedb.org/3/search/movie?query=${parsedData?.movieTitle}&api_key=${process.env.REACT_APP_TMDB_API_KEY}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-        .then((response)=>(response.json()))
-        .then((data) => {
-          const baseUrl = "https://image.tmdb.org/t/p/w500";
-          const posterPath = data.results[0].poster_path;
-          const fullPosterUrl = `${baseUrl}${posterPath}`;
-          parsedData.imageLink = fullPosterUrl;
-          setRecommendedMovie(parsedData); //To do: make a carousel of all the top recomms 
-          setPage("recommendedMovie");
-        })
+      .then((data) => {
+        const dataList = data.recommendations;
+        const parsedDataList: Movie[] = [];
+
+        dataList.forEach((x: any) => {
+          const parsedData: Movie = {
+            ageRating: x["Age Rating"],
+            description: x["Description"].trim(),
+            duration: `${x["Duration"]} min`,
+            genre: x["Genre"],
+            imdbRating: x["IMDB Rating"],
+            movieTitle: x["Movie Title"],
+            imageLink: '',
+            year: x["Year"],
+          };
+
+          // Fetch poster from TMDB
+          fetch(`https://api.themoviedb.org/3/search/movie?query=${parsedData.movieTitle}&api_key=${process.env.REACT_APP_TMDB_API_KEY}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            }
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const baseUrl = "https://image.tmdb.org/t/p/w500";
+              const posterPath = data.results[0]?.poster_path;
+              if (posterPath) {
+                const fullPosterUrl = `${baseUrl}${posterPath}`;
+                parsedData.imageLink = fullPosterUrl;
+              }
+
+              // Once the image link is fetched, update the parsedDataList state
+              parsedDataList.push(parsedData);
+
+              // Only set the state after all movies have been processed
+              if (parsedDataList.length === dataList.length) {
+                setRecommendedMovies(parsedDataList);
+                setPage("recommendedMovie");
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching TMDB data:", error);
+              setPage('Error');
+            });
+        });
       })
       .catch((error) => {
         console.error("Error fetching recommendations:", error);
         setPage('Error');
       });
-  }
-  ;
+  };
 
   return (
     <div className="App">
@@ -98,7 +112,7 @@ const App: React.FC = () => {
 
       {page === 'recommendedMovie' && (
         <MainContainer>
-          <RecommendedMovie movie={recommendedMovie} setPage={setPage} />
+          <RecommendedMovie movies={recommendedMovies} setPage={setPage} />
         </MainContainer>
       )}
       {page === 'loadingPage' && (

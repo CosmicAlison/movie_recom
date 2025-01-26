@@ -29,11 +29,17 @@
         border-radius: 50%;
         height:max-content;
         width: max-content;
+        padding:7px 10px;
     }
 
     .backToIntro:hover{
         color: #4e090b;
         background-color: white;
+        border-color: #4e090b;
+    }
+
+    .movie-info{
+        margin-bottom: 10vh;
     }
 }
 

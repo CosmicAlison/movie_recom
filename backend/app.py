@@ -46,20 +46,19 @@ def recommend():
             # Filter movies based on `movie_age`
             current_year = pd.Timestamp.now().year
             if movie_age == "Yes":
-                filtered_movies = movies_df[movies_df["Year"] >= current_year - 5]
+                filtered_movies = movies_df[movies_df["Year"] >= current_year - 15]
             elif movie_age == "No":
-                filtered_movies = movies_df[movies_df["Year"] < current_year - 5]
+                filtered_movies = movies_df[movies_df["Year"] < current_year - 15]
             else: 
                 filtered_movies = movies_df
 
             # Sort movies based on similarity in descending order
             sorted_movies = filtered_movies.sort_values(by="similarity", ascending=False)
-            sorted_movies = sorted_movies.map(lambda x: None if x == "N/A" else x)
 
         
             recommendations = sorted_movies[
                 ["Movie Title", "Year", "Age Rating", "Duration", "Genre", "IMDB Rating", "Description", "Image Links", "similarity"]
-            ].head(10)
+            ].head(8)
             recommendations = recommendations.sort_values(by="IMDB Rating", ascending=False).to_dict(orient="records")
             print(recommendations)
 

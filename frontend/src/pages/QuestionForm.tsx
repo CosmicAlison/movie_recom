@@ -20,7 +20,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit, setPage }) => {
       id: 1,
       type: "checkbox",
       question: "Which movie themes are you interested in? You may pick multiple.",
-      options: ["Friendship", "Teenagers", "Set in Space", "Coming of Age", "Post-Apocalyptic", "Highschool","Nostalgia", "Weddings", "Set in the Past", "Travel", "Food", "Activism", "Family", "Birthdays"],
+      options: ["Friendship", "Teenagers", "Vampires", "Love", "Space", "Superheroes","Survival", "Coming of Age", "Post-Apocalyptic", "Dystopian", "Revenge", "Highschool","Nostalgia", "Weddings", "Set in the Past", "Travel", "Food", "Activism", "Family", "Birthdays"],
     },
     {
       id: 2,
