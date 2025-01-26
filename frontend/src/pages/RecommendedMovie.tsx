@@ -4,7 +4,6 @@ import '../styles/RecommendedMovie.css';
 interface Movie {
   movieTitle: string;
   year: number;
-  ageRating: string;
   duration: string;
   genre: string;
   imdbRating: number;
@@ -39,11 +38,6 @@ const RecommendedMovie: React.FC<RecommendedMovieProps> = ({ movies, setPage }) 
               <div className="viewer-rating">
                 <p className="rating">
                   Viewer Rating: <span className="red-bold">{movie.imdbRating}</span>
-                </p>
-              </div>
-              <div className="age-rating">
-                <p className="rating">
-                  Age Rating: <span className="red-bold">{movie.ageRating}</span>
                 </p>
               </div>
             </div>

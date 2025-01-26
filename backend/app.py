@@ -9,9 +9,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="/")
 CORS(app)
 
-movies_df = pd.read_csv('../backend/all_movies.csv')
-movies_df['combined'] = movies_df['Genre'] + " " + movies_df['Description']
-
+movies_df = pd.read_csv('../backend/movies.csv')
+movies_df['release_date'] = pd.to_datetime(movies_df['release_date'])
+movies_df['year'] = movies_df['release_date'].dt.year
+movies_df = movies_df[movies_df['original_language'] == 'en']
+movies_df['combined'] = movies_df['genres'] + movies_df['overview'] +  movies_df['keywords']
+movies_df['combined'] = movies_df['combined'].fillna('')
+movies_df['poster_path'] = movies_df['poster_path'].fillna('path')
 vectorizer = TfidfVectorizer(stop_words='english')
 
 # Fit the vectorizer on the combined text data (genre + description)
@@ -46,9 +50,9 @@ def recommend():
             # Filter movies based on `movie_age`
             current_year = pd.Timestamp.now().year
             if movie_age == "Yes":
-                filtered_movies = movies_df[movies_df["Year"] >= current_year - 15]
+                filtered_movies = movies_df[movies_df["year"] >= current_year - 15]
             elif movie_age == "No":
-                filtered_movies = movies_df[movies_df["Year"] < current_year - 15]
+                filtered_movies = movies_df[movies_df["year"] < current_year - 15]
             else: 
                 filtered_movies = movies_df
 
@@ -57,9 +61,9 @@ def recommend():
 
         
             recommendations = sorted_movies[
-                ["Movie Title", "Year", "Age Rating", "Duration", "Genre", "IMDB Rating", "Description", "Image Links", "similarity"]
-            ].head(8)
-            recommendations = recommendations.sort_values(by="IMDB Rating", ascending=False).to_dict(orient="records")
+                ["original_title", "year", "runtime", "genres", "vote_average", "overview", "poster_path", "similarity"]
+            ].head(10)
+            recommendations = recommendations.sort_values(by="vote_average", ascending=False).to_dict(orient="records")
             print(recommendations)
 
             return jsonify({"recommendations": recommendations})

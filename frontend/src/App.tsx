@@ -10,7 +10,6 @@ import Error from './pages/Error.tsx';
 interface Movie {
   movieTitle: string;
   year: number;
-  ageRating: string;
   duration: string;
   genre: string;
   imdbRating: number;
@@ -49,46 +48,19 @@ const App: React.FC = () => {
 
         dataList.forEach((x: any) => {
           const parsedData: Movie = {
-            ageRating: x["Age Rating"],
-            description: x["Description"].trim(),
-            duration: `${x["Duration"]} min`,
-            genre: x["Genre"],
-            imdbRating: x["IMDB Rating"],
-            movieTitle: x["Movie Title"],
-            imageLink: '',
-            year: x["Year"],
+            description: x["overview"].trim(),
+            duration: `${x["runtime"]} min`,
+            genre: x["genres"],
+            imdbRating: x["vote_average"],
+            movieTitle: x["original_title"],
+            imageLink: `https://image.tmdb.org/t/p/w500${x["poster_path"]}`,
+            year: x["year"],
+            
           };
-
-          // Fetch poster from TMDB
-          fetch(`https://api.themoviedb.org/3/search/movie?query=${parsedData.movieTitle}&api_key=${process.env.REACT_APP_TMDB_API_KEY}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            }
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              const baseUrl = "https://image.tmdb.org/t/p/w500";
-              const posterPath = data.results[0]?.poster_path;
-              if (posterPath) {
-                const fullPosterUrl = `${baseUrl}${posterPath}`;
-                parsedData.imageLink = fullPosterUrl;
-              }
-
-              // Once the image link is fetched, update the parsedDataList state
-              parsedDataList.push(parsedData);
-
-              // Only set the state after all movies have been processed
-              if (parsedDataList.length === dataList.length) {
-                setRecommendedMovies(parsedDataList);
-                setPage("recommendedMovie");
-              }
-            })
-            .catch((error) => {
-              console.error("Error fetching TMDB data:", error);
-              setPage('Error');
-            });
-        });
+          parsedDataList.push(parsedData);
+        })
+          setRecommendedMovies(parsedDataList);
+          setPage('recommendedMovie')
       })
       .catch((error) => {
         console.error("Error fetching recommendations:", error);
