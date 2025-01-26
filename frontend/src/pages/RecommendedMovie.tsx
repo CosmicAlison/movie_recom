@@ -14,13 +14,14 @@ interface Movie {
 
 interface RecommendedMovieProps {
   movie: Movie | undefined;
+  setPage : (page: "intro" | "questionForm" | "recommendedMovie") => void;
 }
 
-const RecommendedMovie: React.FC<RecommendedMovieProps> = ({ movie }) => {
+const RecommendedMovie: React.FC<RecommendedMovieProps> = ({ movie, setPage }) => {
   return (
     <div className="recommended-movie-container">
       <div className="movie-info">
-        <h3 className="movie-title">{movie?.movieTitle}</h3>
+        <h3 className="movie-title">{movie?.movieTitle} <span className='year'>({movie?.year})</span></h3>
         <div className="movie-poster">
           <img className="poster-image" src={movie?.imageLink} alt={`${movie?.movieTitle} Poster`} />
         </div> 
@@ -35,6 +36,7 @@ const RecommendedMovie: React.FC<RecommendedMovieProps> = ({ movie }) => {
           </div>
         </div>
       </div>
+      <button onClick={()=>{setPage('intro')}} type='button' className='backToIntro'><span className="material-symbols-rounded">restart_alt</span></button>
     </div>
   );
 };

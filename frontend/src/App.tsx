@@ -98,7 +98,7 @@ const App: React.FC = () => {
 
       {page === 'recommendedMovie' && (
         <MainContainer>
-          <RecommendedMovie movie={recommendedMovie} />
+          <RecommendedMovie movie={recommendedMovie} setPage={setPage} />
         </MainContainer>
       )}
       {page === 'loadingPage' && (

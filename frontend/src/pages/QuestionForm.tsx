@@ -20,7 +20,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit, setPage }) => {
       id: 1,
       type: "checkbox",
       question: "Which movie themes are you interested in? You may pick multiple.",
-      options: ["Friendship", "Set in Space", "Coming of Age", "Post-Apocalyptic", "Nostalgia", "Weddings", "Set in the Past", "Travel", "Food", "Activism", "Family", "Birthdays"],
+      options: ["Friendship", "Teenagers", "Set in Space", "Coming of Age", "Post-Apocalyptic", "Highschool","Nostalgia", "Weddings", "Set in the Past", "Travel", "Food", "Activism", "Family", "Birthdays"],
     },
     {
       id: 2,
@@ -32,7 +32,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit, setPage }) => {
       id: 3,
       type: "checkbox",
       question: "Which genres are you most interested in today?",
-      options: ["Action", "Adventure", "Animation", "Biography", "Crime", "Documentary", "Musical", "Comedy", "Fantasy", "Mystery", "War", "Western", "Drama", "Horror", "Sci-Fi"],
+      options: ["Action", "Adventure", "Romance", "Animation", "Biography", "Crime", "Documentary", "Musical", "Comedy", "Fantasy", "Mystery", "War", "Western", "Drama", "Horror", "Sci-Fi"],
     },
     {
       id: 4,
