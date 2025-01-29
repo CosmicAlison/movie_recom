@@ -52,9 +52,9 @@ def recommend():
             # Filter movies based on `movie_age`
             current_year = pd.Timestamp.now().year
             if movie_age == "Yes":
-                filtered_movies = movies_df[movies_df["year"] >= current_year - 15]
+                filtered_movies = movies_df[movies_df["year"] >= current_year - 10]
             elif movie_age == "No":
-                filtered_movies = movies_df[movies_df["year"] < current_year - 15]
+                filtered_movies = movies_df[movies_df["year"] < current_year - 10]
             else: 
                 filtered_movies = movies_df
 
