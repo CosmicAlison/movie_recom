@@ -4,7 +4,6 @@ import '../styles/RecommendedMovie.css';
 interface Movie {
   movieTitle: string;
   year: number;
-  duration: string;
   genre: string;
   imdbRating: number;
   description: string;

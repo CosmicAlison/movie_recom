@@ -10,7 +10,6 @@ import Error from './pages/Error.tsx';
 interface Movie {
   movieTitle: string;
   year: number;
-  duration: string;
   genre: string;
   imdbRating: number;
   description: string;
@@ -49,7 +48,6 @@ const App: React.FC = () => {
         dataList.forEach((x: any) => {
           const parsedData: Movie = {
             description: x["overview"].trim(),
-            duration: `${x["runtime"]} min`,
             genre: x["genres"],
             imdbRating: x["vote_average"],
             movieTitle: x["original_title"],
