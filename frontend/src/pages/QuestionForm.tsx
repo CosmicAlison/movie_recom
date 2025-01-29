@@ -32,7 +32,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit, setPage }) => {
       id: 3,
       type: "checkbox",
       question: "Which genres are you most interested in today?",
-      options: ["Action", "Adventure", "Romance", "Animation", "Biography", "Crime", "Documentary", "Musical", "Comedy", "Fantasy", "Mystery", "War", "Western", "Drama", "Horror", "Sci-Fi"],
+      options: ["Action", "Adventure", "Romance", "Drama", "Comedy", "Horror", "Science-Fiction", "Animation", "Biography", "Crime", "Documentary", "Musical",  "Fantasy", "Mystery", "War", "Western" ],
     },
     {
       id: 4,

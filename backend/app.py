@@ -12,7 +12,6 @@ CORS(app)
 movies_df = pd.read_csv('../backend/movies.csv')
 movies_df['release_date'] = pd.to_datetime(movies_df['release_date'])
 movies_df['year'] = movies_df['release_date'].dt.year
-movies_df = movies_df[movies_df['original_language'] == 'en']
 movies_df = movies_df.dropna(subset=['poster_path'])
 movies_df = movies_df.dropna(subset=['year'])
 movies_df['combined'] = movies_df['genres'] + movies_df['overview'] +  movies_df['keywords']
