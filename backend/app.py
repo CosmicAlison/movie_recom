@@ -6,8 +6,10 @@ from flask_cors import CORS
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+debug = False 
+
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="/")
-CORS(app)
+CORS(app, resources={r"/*": {"origins": ["https://picflix-wheat.vercel.app/"]}})
 
 movies_df = pd.read_csv('../backend/movies.csv')
 movies_df['release_date'] = pd.to_datetime(movies_df['release_date'])
@@ -27,8 +29,10 @@ tfidf_matrix = vectorizer.fit_transform(movies_df['combined'])
 def home():
     return "Movie Recommendation server is running!"
 
-@app.route('/recommend', methods=['POST'])
+@app.route('/recommend', methods=['POST','OPTIONS'])
 def recommend():
+    if request.method == 'OPTIONS':
+        return jsonify({"message": "CORS preflight request successful"}), 200
     data = request.get_json()
     if 'genre' in data and 'themes' in data: 
         try:
@@ -62,15 +66,19 @@ def recommend():
 
         
             recommendations = sorted_movies[
-                ["original_title", "year", "runtime", "genres", "vote_average", "overview", "poster_path", "similarity"]
+                ["original_title", "year", "genres", "vote_average", "overview", "poster_path", "similarity"]
             ].head(10)
             recommendations = recommendations.sort_values(by="vote_average", ascending=False).to_dict(orient="records")
             print(recommendations)
 
             return jsonify({"recommendations": recommendations})
-        except: 
+        except Exception as e: 
+            if (debug):
+                print(e)
             return jsonify({'error': 'Could not provide recommendations'}), 400
+    if(debug):
+        print("bad data from frontend")
     return jsonify({'error': 'Theme and genre fields not included'}), 400
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
