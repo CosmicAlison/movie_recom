@@ -60,7 +60,6 @@ def recommend():
                 ["original_title", "year", "genres", "vote_average", "overview", "poster_path", "similarity"]
             ].head(10)
             recommendations = recommendations.sort_values(by="vote_average", ascending=False).to_dict(orient="records")
-            print(recommendations)
 
             return jsonify({"recommendations": recommendations})
         except Exception as e: 
@@ -73,4 +72,3 @@ def recommend():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
-    #app.run(debug=False)
