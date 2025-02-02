@@ -33,7 +33,7 @@ const App: React.FC = () => {
       mood: answers[5] as string,
     };
 
-    fetch("http://localhost:5000/recommend", {
+    fetch("https://picflix-445403.uc.r.appspot.com/recommend", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,29 +1,20 @@
 import pandas as pd
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+
 debug = False 
 
 app = Flask(__name__)
 CORS(app)
-
-movies_df = pd.read_csv('movies.csv.gz', compression='gzip')
-print(movies_df.head())
-movies_df['release_date'] = pd.to_datetime(movies_df['release_date'])
-movies_df['year'] = movies_df['release_date'].dt.year
-movies_df = movies_df.dropna(subset=['poster_path'])
-movies_df = movies_df.dropna(subset=['year'])
-movies_df['combined'] = movies_df['genres'] + movies_df['overview'] +  movies_df['keywords']
-movies_df['combined'] = movies_df['combined'].fillna('unavailable')
-
+movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
 vectorizer = TfidfVectorizer(stop_words='english')
 
 # Fit the vectorizer on the combined text data (genre + description)
 tfidf_matrix = vectorizer.fit_transform(movies_df['combined'])
-
 
 @app.route("/")
 def home():
@@ -81,5 +72,5 @@ def recommend():
     return jsonify({'error': 'Theme and genre fields not included'}), 400
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", debug=True)
     #app.run(debug=False)

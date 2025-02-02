@@ -1,5 +1,5 @@
-flask
+Flask
 gunicorn 
 pandas
 scikit-learn
-flask-cors
+Flask-Cors
