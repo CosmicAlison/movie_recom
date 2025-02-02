@@ -4,9 +4,8 @@
 This repository contains the code for a movie recommendation system built with Flask and scikit-learn. The system provides recommendations based on genre and themes using TF-IDF vectorization and cosine similarity.
 
 ## Features
-- **Movie Recommendation**: Users can submit a `POST` request with their desired genre and themes, and the system will return movie recommendations based on their input.
+- **Movie Recommendation**: Users can submit a `POST` request with their desired genre, movie age and themes, and the system will return movie recommendations based on their input.
 - **CORS Support**: The API supports Cross-Origin Resource Sharing (CORS) to allow it to be used in web applications.
-- **Movie Filtering**: The system filters movies by age (`movie_age`) and sorts them based on their similarity to the user input.
 - **Cosine Similarity**: Uses cosine similarity to compute similarity between the user input and a dataset of movies.
 
 ## Requirements
@@ -30,11 +29,6 @@ To run the server locally, use:
 python main.py
 
 ## Endpoints
-
-### `/` - Home
-
-- **Method**: `GET`
-- **Description**: Returns a simple message indicating the server is running.
 
 ### `/recommend` - Movie Recommendations
 
