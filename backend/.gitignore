@@ -1,2 +1,5 @@
-movies.csv 
+
 app.yaml
+/venv
+__pycache__/
+*.pyc
