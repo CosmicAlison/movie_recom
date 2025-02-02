@@ -77,6 +77,17 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit, setPage }) => {
 
 
   const handleNext = (): void => {
+    const currentQuestion = questions[currentQuestionIndex];
+    const currentAnswer = answers[currentQuestion.id];
+  
+    if (
+      (currentQuestion.type === "radio" && !currentAnswer) ||
+      (currentQuestion.type === "checkbox" && (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0)))
+    ) {
+      alert("Please select an option before proceeding.");
+      return;
+    }
+  
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
