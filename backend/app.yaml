@@ -1,2 +1,17 @@
 runtime: python39
 instance_class: F4_1G
+
+automatic_scaling:
+  min_idle_instances: 1
+  max_idle_instances: 3
+  min_instances: 1
+  max_instances: 5
+  target_cpu_utilization: 0.65
+  target_throughput_utilization: 0.75
+
+handlers:
+- url: /_ah/warmup
+  script: auto
+
+inbound_services:
+- warmup
