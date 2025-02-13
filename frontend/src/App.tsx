@@ -33,7 +33,7 @@ const App: React.FC = () => {
       mood: answers[5] as string,
     };
 
-    fetch("https://picflix-445403.uc.r.appspot.com/recommend", {
+    fetch("https://movie-recom-sa3u.onrender.com/recommend", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
