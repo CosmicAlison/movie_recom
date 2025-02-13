@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/recommend": {"origins": "*"}})
 
 debug = False
 movies_df = None
@@ -22,6 +22,15 @@ def load_resources():
         movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
         vectorizer = TfidfVectorizer(stop_words='english')
         tfidf_matrix = vectorizer.fit_transform(movies_df['combined'])
+
+
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
 
 
 @app.route('/_ah/warmup', methods=['GET'])
