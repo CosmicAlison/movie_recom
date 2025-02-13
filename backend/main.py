@@ -41,8 +41,12 @@ def home():
 @app.route('/recommend', methods=['POST', 'OPTIONS'])
 def recommend():
     if request.method == 'OPTIONS':
-        return jsonify({"message": "CORS preflight request successful"}), 200
-
+        response = jsonify({"message": "CORS preflight request successful"})
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        return response, 200
+    
     data = request.get_json()
     if 'genre' in data and 'themes' in data:
         try:
