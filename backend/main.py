@@ -3,9 +3,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from scipy.sparse import csr_matrix
+from functools import lru_cache
+import gc
 
 app = Flask(__name__)
-CORS(app, resources={r"/recommend": {"origins": "*"}})
+CORS(app)
 
 debug = False
 movies_df = None
@@ -18,11 +21,14 @@ def load_resources():
     Load movie data and TF-IDF vectorizer.
     """
     global movies_df, vectorizer, tfidf_matrix
-    if movies_df is None:
-        movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
-        vectorizer = TfidfVectorizer(stop_words='english')
-        tfidf_matrix = vectorizer.fit_transform(movies_df['combined'])
+    movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
+    vectorizer = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = csr_matrix(vectorizer.fit_transform(movies_df['combined']))
+    return movies_df, vectorizer, tfidf_matrix
 
+@lru_cache(maxsize=1)
+def get_resources():
+    return load_resources()
 
 
 @app.after_request
@@ -38,7 +44,7 @@ def warmup():
     """
     endpoint for pre-loading data and models to prevent cold starts in app engine.
     """
-    load_resources()
+    get_resources()
     return "Warmup completed", 200
 
 
@@ -59,14 +65,10 @@ def recommend():
     data = request.get_json()
     if 'genre' in data and 'themes' in data:
         try:
-            # Ensure resources are loaded before recommendations
-            load_resources()
-
-            occasion = data['occasion']
+            movies_df, vectorizer, tfidf_matrix = get_resources()
             movie_age = data['movie_age']
             genre = data['genre']
             themes = data['themes']
-            mood = data['mood']
 
             user_input_vector = vectorizer.transform([" ".join(genre + themes)])
             cosine_similarities = cosine_similarity(user_input_vector, tfidf_matrix)
@@ -92,6 +94,9 @@ def recommend():
             ].head(10)
             recommendations = recommendations.sort_values(by="vote_average", ascending=False).to_dict(orient="records")
 
+            del cosine_sim_df
+            gc.collect()
+
             return jsonify({"recommendations": recommendations})
 
         except Exception as e:
@@ -105,7 +110,7 @@ def recommend():
 
 
 if __name__ == "__main__":
-    load_resources()  
+    get_resources()  
     app.run(host="0.0.0.0", debug=True)
 
 
