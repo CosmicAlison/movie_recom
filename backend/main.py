@@ -6,15 +6,20 @@ from sklearn.metrics.pairwise import cosine_similarity
 from scipy.sparse import csr_matrix
 from functools import lru_cache
 import gc
+import tracemalloc
+import psutil
 
 app = Flask(__name__)
 CORS(app)
 
 debug = False
-movies_df = None
-vectorizer = None
-tfidf_matrix = None
 
+def log_memory_usage(stage=""):
+    process = psutil.Process()
+    memory_usage = process.memory_info().rss / (1024 * 1024)  # Convert to MB
+    print(f"[Memory] {stage}: {memory_usage:.2f} MB")
+
+tracemalloc.start()  # Start tracking memory usage
 
 def load_resources():
     """
@@ -64,15 +69,19 @@ def recommend():
     
     data = request.get_json()
     if 'genre' in data and 'themes' in data:
+        log_memory_usage("Before Loading Data")
         try:
             movies_df, vectorizer, tfidf_matrix = get_resources()
+            log_memory_usage("After getting resources")
             movie_age = data['movie_age']
             genre = data['genre']
             themes = data['themes']
 
             user_input_vector = vectorizer.transform([" ".join(genre + themes)])
             cosine_similarities = cosine_similarity(user_input_vector, tfidf_matrix)
-
+            log_memory_usage("After vectorizing input data")
+            del user_input_vector
+            gc.collect
             cosine_sim_df = pd.DataFrame(cosine_similarities.T, columns=["similarity"], index=movies_df.index)
             movies_df["similarity"] = cosine_sim_df["similarity"]
 
@@ -85,21 +94,25 @@ def recommend():
                 filtered_movies = movies_df[movies_df["year"] < current_year - 10]
             else:
                 filtered_movies = movies_df
-
+            log_memory_usage("After filtering")
             # Sort movies based on similarity in descending order
             sorted_movies = filtered_movies.sort_values(by="similarity", ascending=False)
+            del filtered_movies
+            gc.collect()
 
             recommendations = sorted_movies[
                 ["original_title", "year", "genres", "vote_average", "overview", "poster_path", "similarity"]
             ].head(10)
             recommendations = recommendations.sort_values(by="vote_average", ascending=False).to_dict(orient="records")
 
+            del sorted_movies
             del cosine_sim_df
             gc.collect()
 
             return jsonify({"recommendations": recommendations})
 
         except Exception as e:
+            log_memory_usage("On Exception")
             if debug:
                 print(e)
             return jsonify({'error': 'Could not provide recommendations'}), 400
