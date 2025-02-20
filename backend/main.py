@@ -8,6 +8,7 @@ from functools import lru_cache
 import gc
 import tracemalloc
 import psutil
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -209,4 +210,5 @@ def recommend():
     return jsonify({'error': 'Theme and genre fields not included'}), 400
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
