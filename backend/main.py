@@ -22,20 +22,20 @@ def log_memory_usage(stage=""):
 
 tracemalloc.start()  # Start tracking memory usage
 
+@lru_cache(maxsize=1)
 def load_resources():
     """
     Load movie data and TF-IDF vectorizer.
     """
+    print("[Memory] Loading Data...")
     global movies_df, vectorizer, tfidf_matrix
     movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
     vectorizer = TfidfVectorizer(stop_words='english')
     tfidf_matrix = csr_matrix(vectorizer.fit_transform(movies_df['combined']))
     return movies_df, vectorizer, tfidf_matrix
 
-@lru_cache(maxsize=1)
 def get_resources():
     return load_resources()
-
 
 @app.after_request
 def add_cors_headers(response):

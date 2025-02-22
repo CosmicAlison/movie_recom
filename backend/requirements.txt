@@ -5,3 +5,4 @@ scikit-learn
 Flask-Cors
 scipy
 psutil
+gevent
