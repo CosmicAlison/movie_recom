@@ -30,7 +30,7 @@ def load_resources():
     print("[Memory] Loading Data...")
     global movies_df, vectorizer, tfidf_matrix
     movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
-    vectorizer = TfidfVectorizer(stop_words='english')
+    vectorizer = TfidfVectorizer(stop_words='english', max_features=5000)
     tfidf_matrix = csr_matrix(vectorizer.fit_transform(movies_df['combined']))
     log_memory_usage("After getting resources")
     return movies_df, vectorizer, tfidf_matrix
