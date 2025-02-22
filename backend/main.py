@@ -32,6 +32,7 @@ def load_resources():
     movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
     vectorizer = TfidfVectorizer(stop_words='english')
     tfidf_matrix = csr_matrix(vectorizer.fit_transform(movies_df['combined']))
+    log_memory_usage("After getting resources")
     return movies_df, vectorizer, tfidf_matrix
 
 def get_resources():
@@ -53,6 +54,8 @@ def warmup():
     get_resources()
     return "Warmup completed", 200
 
+movies_df, vectorizer, tfidf_matrix = get_resources()
+
 
 @app.route("/")
 def home():
@@ -72,8 +75,6 @@ def recommend():
     if 'genre' in data and 'themes' in data:
         log_memory_usage("Before Loading Data")
         try:
-            movies_df, vectorizer, tfidf_matrix = get_resources()
-            log_memory_usage("After getting resources")
             movie_age = data['movie_age']
             genre = data['genre']
             themes = data['themes']
