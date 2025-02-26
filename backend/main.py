@@ -17,10 +17,11 @@ debug = False
 
 def log_memory_usage(stage=""):
     process = psutil.Process()
-    memory_usage = process.memory_info().rss / (1024 * 1024)  # Convert to MB
-    print(f"[Memory] {stage}: {memory_usage:.2f} MB")
+    memory_usage = process.memory_info().rss / (1024 * 1024) 
+    if debug :
+        print(f"[Memory] {stage}: {memory_usage:.2f} MB")
 
-tracemalloc.start()  # Start tracking memory usage
+tracemalloc.start()  
 
 @lru_cache(maxsize=1)
 def load_resources():
@@ -30,7 +31,7 @@ def load_resources():
     print("[Memory] Loading Data...")
     global movies_df, vectorizer, tfidf_matrix
     movies_df = pd.read_csv('processed_movies.csv.gz', compression='gzip')
-    vectorizer = TfidfVectorizer(stop_words='english', max_features=5000)
+    vectorizer = TfidfVectorizer(stop_words='english')
     tfidf_matrix = csr_matrix(vectorizer.fit_transform(movies_df['combined']))
     log_memory_usage("After getting resources")
     return movies_df, vectorizer, tfidf_matrix
@@ -44,17 +45,6 @@ def add_cors_headers(response):
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     return response
-
-
-@app.route('/_ah/warmup', methods=['GET'])
-def warmup():
-    """
-    endpoint for pre-loading data and models to prevent cold starts in app engine.
-    """
-    get_resources()
-    return "Warmup completed", 200
-
-movies_df, vectorizer, tfidf_matrix = get_resources()
 
 
 @app.route("/")
@@ -75,6 +65,8 @@ def recommend():
     if 'genre' in data and 'themes' in data:
         log_memory_usage("Before Loading Data")
         try:
+            global movies_df, vectorizer, tfidf_matrix
+            movies_df, vectorizer, tfidf_matrix = get_resources()
             movie_age = data['movie_age']
             genre = data['genre']
             themes = data['themes']
