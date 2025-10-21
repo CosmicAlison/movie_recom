@@ -1,8 +1,10 @@
-Flask
 gunicorn 
-pandas
-scikit-learn
-Flask-Cors
-scipy
-psutil
-gevent
+flask==3.0.3
+flask-cors==4.0.1
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.5.2
+faiss-cpu==1.8.0.post1
+joblib==1.4.2
+pyarrow==17.0.0
+
