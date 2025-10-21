@@ -1,0 +1,34 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "description": "Service that handles authentication and tracking of liked movies",
+  "homepage": "https://github.com/CosmicAlison/movie_recom/tree/main#readme",
+  "bugs": {
+    "url": "https://github.com/CosmicAlison/movie_recom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CosmicAlison/movie_recom.git#main"
+  },
+  "license": "ISC",
+  "author": "Alison Pariela",
+  "type": "commonjs",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "postgres": "^3.4.7"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10"
+  }
+}
