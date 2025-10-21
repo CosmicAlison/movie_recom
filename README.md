@@ -1,83 +1,89 @@
 
-# Movie Recommendation API (Backend Folder)
+# PicFlix — Microservice-Based Movie Recommendation Platform
 
-This repository contains the code for a movie recommendation system built with Flask and scikit-learn. The system provides recommendations based on genre and themes using TF-IDF vectorization and cosine similarity.
+PicFlix is a modular movie recommendation system built using **microservices** for scalability and maintainability. It delivers personalized movie suggestions and allows users to interact with them through authentication-enabled features like “hearting” and saving recommended movies.
 
-## Features
-- **Movie Recommendation**: Users can submit a `POST` request with their desired genre, movie age and themes, and the system will return movie recommendations based on their input.
-- **CORS Support**: The API supports Cross-Origin Resource Sharing (CORS) to allow it to be used in web applications.
-- **Cosine Similarity**: Uses cosine similarity to compute similarity between the user input and a dataset of movies.
+---
 
-## Requirements
+## 🧩 Project Structure
 
-- Python 3.x
-- Flask
-- Flask-CORS
-- pandas
-- scikit-learn
 
-### Install dependencies
 
-To install the necessary dependencies, run:
-pip install -r requirements.txt
+root/
+│
+├── auth-service/ # Express.js authentication and user management service
+│ ├── Dockerfile
+│ ├── package.json
+│ └── src/
+│
+├── recommendation-service/ # Flask-based recommendation engine
+│ ├── Dockerfile
+│ ├── requirements.txt
+│ ├── precompute_embeddings.py # Generates prebuilt TF-IDF/embedding files
+│ └── main.py
+│
+├── frontend/ # React (Vite or Next.js) web client
+│ ├── Dockerfile
+│ ├── package.json
+│ └── src/
+│
+└── docker-compose.yml # Coordinates all services in development
 
-## Running the Application
 
-### Start the Flask server
+---
 
-To run the server locally, use:
-python main.py
+## ⚙️ Overview
 
-## Endpoints
+### 1. **Recommendation Service**
+- Built with **Flask (Python)** and uses **TF-IDF** vectorization + cosine similarity.
+- Precomputes embeddings from a TMDB-derived dataset for fast lookups.
+- Returns top 15 recommendations based on user-selected genres, themes, and movie age.
+- Containerized with Docker for consistent deployment.
 
-### `/recommend` - Movie Recommendations
+### 2. **Auth Service**
+- Built with **Node.js / Express**.
+- Handles user registration, login, and JWT-based authentication.
+- Stores and retrieves liked movies (“hearts”) for authenticated users.
+- Communicates with the recommendation service through internal network routes (via Docker).
 
-- **Method**: `POST`
-- **Request JSON**:
-  {
-      "genre": ["Action", "Adventure"],
-      "themes": ["Superhero", "Science Fiction"],
-      "occasion": "Yes",
-      "movie_age": "Yes",
-      "mood": "Exciting"
-  }
+### 3. **Frontend**
+- Built with **React** (or Next.js, depending on setup).
+- Provides the user interface for searching, viewing recommendations, and managing favorites.
+- Calls the Auth and Recommendation services via REST API endpoints.
 
-  - `genre`: A list of movie genres (e.g., ["Action", "Adventure"]).
-  - `themes`: A list of themes (e.g., ["Superhero", "Science Fiction"]).
-  - `occasion`: (Optional) Whether the movie is suitable for the occasion.
-  - `movie_age`: (Optional) Filters movies by age (e.g., "Yes" for recent movies).
-  - `mood`: (Optional) User's desired mood for the movie (e.g., "Exciting").
+---
 
-- **Response**:
-  {
-      "recommendations": [
-          {
-              "original_title": "Avengers: Endgame",
-              "year": 2019,
-              "genres": ["Action", "Adventure", "Science Fiction"],
-              "vote_average": 8.4,
-              "overview": "After the devastating events of Avengers: Infinity War, the Avengers assemble once more...",
-              "poster_path": "/path_to_poster.jpg",
-              "similarity": 0.92
-          },
-      ]
-  }
+## 🚀 Running Locally with Docker
 
-  - `original_title`: Movie's title.
-  - `year`: Year of release.
-  - `genres`: Genres of the movie.
-  - `vote_average`: Average user rating for the movie.
-  - `overview`: Short description of the movie.
-  - `poster_path`: Path to the movie's poster image.
-  - `similarity`: The similarity score between the movie and the user input.
+Make sure you have **Docker** and **Docker Compose** installed.
 
-## Data
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/picflix.git
+   cd picflix
 
-The dataset used for recommendations is stored in `processed_movies.csv.gz`. It includes various attributes for each movie, such as title, genre, overview, keywords, and more.
 
-- The `combined` field is a concatenation of movie genres, overview, and keywords, which is used to calculate the similarity score.
-  
-## Notes
+Build and start all services:
 
-- This API does not require a database, as it directly loads a CSV file (`processed_movies.csv.gz`) to make recommendations.
-- The TF-IDF vectorizer is pre-trained on the `combined` field and is used to compute the similarity between the user input and movie data.
+docker-compose up --build
+
+
+Once everything is running:
+
+Frontend: http://localhost:3000
+
+Auth Service: http://localhost:4000
+
+Recommendation Service: http://localhost:5000
+
+🧠 Key Features
+
+Microservice architecture for scalability
+
+Movie recommendation engine powered by NLP (TF-IDF & cosine similarity)
+
+User authentication with JWT
+
+Persistent favorites & interaction tracking
+
+Fully containerized using Docker
