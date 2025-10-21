@@ -10,15 +10,12 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Load resources once at startup
-@app.before_first_request
-def load_resources():
-    global movies, vectorizer, svd, index
-    movies = pd.read_parquet("movies.parquet")
-    vectorizer = joblib.load("vectorizer.pkl")
-    svd = joblib.load("svd.pkl")
-    index = faiss.read_index("tfidf.index")
-    print("✅ Resources loaded into memory.")
+global movies, vectorizer, svd, index
+movies = pd.read_parquet("movies.parquet")
+vectorizer = joblib.load("vectorizer.pkl")
+svd = joblib.load("svd.pkl")
+index = faiss.read_index("tfidf.index")
+print("✅ Resources loaded into memory.")
 
 @app.route("/")
 def home():
